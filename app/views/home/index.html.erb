@@ -1,0 +1,83 @@
+
+
+<div class="container">
+	<div class="row">
+		<div class="col-xs-12 ">
+			<nav>
+		    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+		      <a class="nav-item nav-link active" id="nav-tweets-tab" data-toggle="tab" href="#nav-tweets" role="tab" aria-controls="nav-tweets" aria-selected="true">Tweets </a>
+		      <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</a>
+		    </div>
+		  </nav>
+
+		  <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+			  <div class="tab-pane fade show active" id="nav-tweets" role="tabpanel" aria-labelledby="nav-tweets-tab">
+			  	<%= form_tag('/tweets') do %>
+			  		<%= text_area_tag :content %>
+			  		<%=submit_tag "tweet"%>
+			  	<%end%>
+			  	<div class="">
+			  		<%@tweets.map do |tweet|%>
+			  		<div class="tweet-contain">
+			  		 <span>username: <%= tweet.user.username%> <%= "(me)" if tweet.user.id == current_user.id%></span><br/>
+			  			<span>content: </span>
+			  			<span><%=tweet.content%></span>
+			  			<%if (current_user.id != tweet.user.id) %>
+				  			<%if @followings.map(&:id).include?(tweet.user.id) %>
+									<span><a href="javascript:void(0)" data-id="<%=tweet.user.id%>"  data-type="unfollow" class="tweet userf<%=tweet.user.id%>">unfollow</a></span>
+								<%else%>
+									<span><a href="javascript:void(0)"  data-id="<%=tweet.user.id%>" data-type="follow" class="tweet userf<%=tweet.user.id%>">follow</a></span>
+								<%end%>
+							 <%end%>
+							</div>
+			  		<%end%>
+			  	</div>
+
+			  </div>
+			  <div class="tab-pane fade  active" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+					  <nav>
+					    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+					      <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-all" role="tab" aria-controls="nav-all" aria-selected="true">All Users</a>
+					      <a class="nav-item nav-link" id="nav-followers-tab" data-toggle="tab" href="#nav-followers" role="tab" aria-controls="nav-followers" aria-selected="false">followers</a>
+					      <a class="nav-item nav-link" id="nav-follwings-tab" data-toggle="tab" href="#nav-follwings" role="tab" aria-controls="nav-follwings" aria-selected="false">follwings</a>
+					    </div>
+					  </nav>
+					  <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+					    <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab">
+					    	<%@users.map do |user| %>
+									<div class="col-md-6">
+										<span><%=user.username %></span>
+										<span><%=user.email %></span>
+									</div>
+									<div class="col-md-3">
+										<%if @followings.map(&:id).include?(user.id) %>
+											<span><a href="javascript:void(0)"  data-id="<%=user.id%>"  data-type="unfollow" class="tweet userf<%=user.id%>">unfollow</a></span>
+										<%else%>
+											<span><a href="javascript:void(0)"  data-id="<%=user.id%>" data-type="follow" class="tweet userf<%=user.id%>">follow</a></span>
+										<%end%>
+									</div>
+									<%end%>
+							</div>
+					    <div class="tab-pane fade" id="nav-followers" role="tabpanel" aria-labelledby="nav-followers-tab">
+					    	<%@followers.map do |user| %>
+									<div class="col-md-6">
+										<span><%=user.username %></span>
+										<span><%=user.email %></span>
+									</div>
+								<%end%>
+					    </div>
+					    <div class="tab-pane fade" id="nav-follwings" role="tabpanel" aria-labelledby="nav-follwings-tab">
+					    	<%@followings.map do |user| %>
+									<div class="col-md-6">
+										<span><%=user.username %></span>
+										<span><%=user.email %></span>
+									</div>
+								<%end%>
+					    </div>   
+					  </div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

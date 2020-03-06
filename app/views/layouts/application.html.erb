@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TestTask1</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <% if user_signed_in? %>
+      <span>me: <%= current_user.username %><span>
+      <%= link_to "Sign Out", destroy_user_session_path, method: :delete %><br />
+    <% else %>
+      <%= link_to "Sign in", new_user_session_path %><br />
+      <%= link_to "Opret", new_user_session_path %><br />
+    <% end %>
+    <%= yield %>
+  </body>
+</html>
